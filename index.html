@@ -3,98 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game with Keyboard and Joystick</title>
-    <style>
-        canvas {
-            border: 1px solid black;
-            display: block;
-            margin: 0 auto;
-        }
-
-        #joystick {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 50%;
-            display: none; /* Hidden by default */
-        }
-
-        #joystickThumb {
-            width: 50px;
-            height: 50px;
-            background: blue;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    </style>
+    <title>StoneBall.io Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <div id="joystick">
-        <div id="joystickThumb"></div>
-    </div>
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const joystick = document.getElementById('joystick');
-        const joystickThumb = document.getElementById('joystickThumb');
-
-        let player = { x: 200, y: 200, size: 20 };
-
-        function drawPlayer() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'red';
-            ctx.fillRect(player.x, player.y, player.size, player.size);
-        }
-
-        // Keyboard controls
-        window.addEventListener('keydown', (e) => {
-            const step = 5;
-            if (e.key === 'ArrowUp' || e.key === 'w') player.y -= step;
-            if (e.key === 'ArrowDown' || e.key === 's') player.y += step;
-            if (e.key === 'ArrowLeft' || e.key === 'a') player.x -= step;
-            if (e.key === 'ArrowRight' || e.key === 'd') player.x += step;
-            drawPlayer();
-        });
-
-        // Joystick controls (for touch devices)
-        let joystickActive = false;
-        joystick.addEventListener('touchstart', () => joystickActive = true);
-        joystick.addEventListener('touchend', () => joystickActive = false);
-        joystick.addEventListener('touchmove', (e) => {
-            if (!joystickActive) return;
-
-            const rect = joystick.getBoundingClientRect();
-            const touch = e.touches[0];
-            const x = touch.clientX - rect.left - rect.width / 2;
-            const y = touch.clientY - rect.top - rect.height / 2;
-
-            const angle = Math.atan2(y, x);
-            const distance = Math.min(Math.sqrt(x * x + y * y), rect.width / 2);
-
-            const step = 3; // Movement speed
-            player.x += Math.cos(angle) * step;
-            player.y += Math.sin(angle) * step;
-
-            // Move joystick thumb
-            joystickThumb.style.transform = `translate(${x}px, ${y}px)`;
-            drawPlayer();
-        });
-
-        // Show joystick for mobile
-        if ('ontouchstart' in window) {
-            joystick.style.display = 'block';
-        }
-
-        drawPlayer();
-    </script>
+    <canvas id="gameCanvas"></canvas>
+    <button id="restartButton">Restart</button>
+    <script src="script.js"></script>
 </body>
 </html>
 
